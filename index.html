@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            margin: 0;
+        }
+
+        #gameContainer {
+            position: relative;
+        }
+
+        #gameBoard, #gameOverCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #gameBoard {
+            border: 1px solid white;
+        }
+
+        #startButton {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            padding: 10px;
+            border: 1px solid white;
+            color: white;
+            background-color: black;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div id="score">Score: 0</div>
+
+    <div>
+        <div id="gameContainer">
+            <canvas id="gameBoard" width="320" height="640"></canvas>
+            <canvas id="gameOverCanvas" width="320" height="640" style="display: none;"></canvas>
+        </div>
+        <br>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
+<div id="gameOver" class="game-over" style="display: none;">
+    <h1>Game Over</h1>
+    <button id="startButton">Start New Game</button>
+</div>
+
