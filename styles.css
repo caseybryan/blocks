@@ -1,29 +1,100 @@
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #222;
+   background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/845e3a94-74ab-4446-b4c5-e76586e3199f/de151gn-3709c031-73dd-4045-a8b1-32c5591bc09d.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzg0NWUzYTk0LTc0YWItNDQ0Ni1iNGM1LWU3NjU4NmUzMTk5ZlwvZGUxNTFnbi0zNzA5YzAzMS03M2RkLTQwNDUtYThiMS0zMmM1NTkxYmMwOWQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.PfFXOFriaABuTw1yz8IxgeKjUL5FN4y0o64y_AwgauQ');
 }
 
 canvas {
-    border: 1px solid #fff;
+  border: 1px solid #fff;
 }
 
-.game-over {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    font-size: 40px;
-    color: white;
-    display: none;
+#gameOver {
+  font-family: 'Press Start 2P';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 40px;
+  color: white;
+  display: none;
+  z-index: 11;
 }
 
-#score {
-  font-family: 'Press Start 2P', cursive;
+#startScreen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-family: 'Press Start 2P';
+  font-size: 24px;
+  color: white;
+  z-index: 1;
+  padding: 10 spx;
+  border: 1px solid white;
+  background-color: black;
+}
+
+#startButton, #restartButton {
+  font-size: 16px;
+  font-family: 'Press Start 2P';
+  padding: 10px;
+  border: 1px solid white;
+  color: white;
+  background-color: black;
+  cursor: pointer;
+}
+
+#gameContainer {
+  position: relative;
+}
+
+#gameBoard {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#gameOverCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#gameInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-family: 'Press Start 2P';
+  font-size: 16px;
   color: white;
 }
 
+#score, #level {
+  padding: 10px;
+  border: 1px solid white;
+  background-color: black;
+  margin-bottom: 5px;
+}
+#overlay {
+  font-family: 'Press Start 2P';
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+.blur {
+  filter: blur(4px);
+}
