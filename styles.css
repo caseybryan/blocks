@@ -1,7 +1,7 @@
 body {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   height: 100vh;
   margin: 0;
   background-color: #222;
@@ -41,94 +41,116 @@ canvas {
   font-family: 'Press Start 2P';
   font-size: 24px;
   color: white;
-  z-index: 1;
-  padding: 10 spx;
+  z-index: 11;
+  padding: 20px;
   border: 1px solid white;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 8px;
+}
+
+#controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top:
+10px;
+flex-wrap: wrap;
+}
+
+.arrowButton,
+.rotateButton {
+font-family: 'Press Start 2P';
+font-size: 1rem;
+padding: 8px 16px;
+border: 2px solid #ccc;
+background-color: #444;
+color: #fff;
+cursor: pointer;
+transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.arrowButton:hover,
+.rotateButton:hover {
+background-color: #333;
+color: #fff;
+border-color: #fff;
 }
 
 #startButton, #restartButton {
-  font-size: 16px;
-  font-family: 'Press Start 2P';
-  padding: 10px;
-  border: 1px solid white;
-  color: white;
-  background-color: black;
-  cursor: pointer;
+font-size: 16px;
+font-family: 'Press Start 2P';
+padding: 10px;
+border: 1px solid white;
+color: white;
+background-color: #444;
+cursor: pointer;
+transition: background-color 0.3s, border-color 0.3s;
 }
 
 #gameContainer {
-  position: relative;
+position: relative;
+margin-top: 50px;
 }
 
 #gameBoard {
-  position: relative;
-  top: 1000;
-  left: 1100;
+position: relative;
+z-index: 2;
 }
 
 #gameOverCanvas {
-  position: absolute;
-  top: 0;
-  left: 0;
+position: absolute;
+top: 0;
+left: 0;
 }
 
 #gameInfo {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  font-family: 'Press Start 2P';
-  font-size: 16px;
-  color: white;
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+position: absolute;
+bottom: 10px;
+left: 10px;
+font-family: 'Press Start 2P';
+font-size: 16px;
+color: white;
 }
 
 #score, #level, #newGame {
-  font-family: 'Press Start 2P';
-  padding: 10px;
-  border: 1px solid white;
-  background-color: black;
-  margin-bottom: 5px;
-   color: white;
-}
-#overlay {
-  font-family: 'Press Start 2P';
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10;
-}
-.blur {
-  filter: blur(4px);
-}
-.box-shadow {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-#startButton:hover, #restartButton:hover {
-  background-color: #333;
-  border-color: #fff;
-  transition: background-color 0.3s, border-color 0.3s;
-}
-#gameContainer {
-  position: relative;
-  margin-top: 50px;
+font-family: 'Press Start 2P';
+padding: 10px;
+border: 1px solid white;
+background-color: rgba(0, 0, 0, 0.8);
+margin-bottom: 5px;
+color: white;
+border-radius: 8px;
 }
 
-#gameInfo {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
+#overlay {
+font-family: 'Press Start 2P';
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+z-index: 10;
+}
+
+.blur {
+filter: blur(4px);
+}
+
+.box-shadow {
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+#startButton:hover, #restartButton:hover {
+background-color: #333;
+border-color: #fff;
 }
 
 .rounded {
-  border-radius: 8px;
+border-radius: 8px;
 }
