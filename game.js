@@ -9,7 +9,43 @@ function updateLevel(newLevel) {
   levelElement.innerText = "Level: " + level;
 }
 
+function resetGame() {
+  // Reset necessary game variables to their initial state
+  console.log("reset() function called");
+  gameOver = true
+  score = 0;
+  updateScore(score);
+  level = 1;
+  updateLevel(level);
+  linesClearedTotal = 0;
+  dropInterval = baseDropInterval;
 
+  // Hide the game over screen and overlay
+  gameOverElement.style.display = 'none';
+  document.getElementById('overlay').style.display = 'none';
+
+  // Call the startGame function to reinitialize the game
+  startGame();
+}
+
+function newGame() {
+  // Reset necessary game variables to their initial state
+  console.log("newGame() function called");
+  reset();
+  score = 0;
+  updateScore(score);
+  level = 1;
+  updateLevel(level);
+  linesClearedTotal = 0;
+  dropInterval = baseDropInterval;
+
+  // Hide the game over screen and overlay
+  gameOverElement.style.display = 'none';
+  document.getElementById('overlay').style.display = 'none';
+
+  // Call the startGame function to reinitialize the game
+  startGame();
+}
 
 const gameOverElement = document.getElementById('gameOver');
 const blurElement = document.getElementById('overlay');
@@ -312,6 +348,8 @@ function gameOverAnimation() {
 }
 
 function startGame() {
+  console.log("start() function called");
+
   if (gameRunning) return;
 
   gameOverElement.style.display = 'none';
@@ -351,26 +389,12 @@ function update(time = 0) {
   requestAnimationFrame(update);
 }
 
-function resetGame() {
-  // Reset necessary game variables to their initial state
-  console.log("reset() function called");
-  score = 0;
-  updateScore(score);
-  level = 1;
-  updateLevel(level);
-  linesClearedTotal = 0;
-  dropInterval = baseDropInterval;
 
-  // Hide the game over screen and overlay
-  gameOverElement.style.display = 'none';
-  document.getElementById('overlay').style.display = 'none';
-
-  // Call the startGame function to reinitialize the game
-  startGame();
-}
 document.getElementById('startButton').addEventListener('click', startGame);
 updateLevel(level);
 document.getElementById('restartButton').addEventListener('click', resetGame);
+document.getElementById('newGame').addEventListener('click', newGame);
+updateLevel(level);
 
 
 reset();
