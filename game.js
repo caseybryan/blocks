@@ -9,23 +9,7 @@ function updateLevel(newLevel) {
   levelElement.innerText = "Level: " + level;
 }
 
-function resetGame() {
-  // Reset necessary game variables to their initial state
-  console.log("reset() function called");
-  score = 0;
-  updateScore(score);
-  level = 1;
-  updateLevel(level);
-  linesClearedTotal = 0;
-  dropInterval = baseDropInterval;
 
-  // Hide the game over screen and overlay
-  gameOverElement.style.display = 'none';
-  document.getElementById('overlay').style.display = 'none';
-
-  // Call the startGame function to reinitialize the game
-  startGame();
-}
 
 const gameOverElement = document.getElementById('gameOver');
 const blurElement = document.getElementById('overlay');
