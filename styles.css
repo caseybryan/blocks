@@ -63,8 +63,8 @@ canvas {
 
 #gameBoard {
   position: relative;
-  top: 0;
-  left: 0;
+  top: 1000;
+  left: 1100;
 }
 
 #gameOverCanvas {
@@ -85,11 +85,13 @@ canvas {
   color: white;
 }
 
-#score, #level {
+#score, #level, #newGame {
+  font-family: 'Press Start 2P';
   padding: 10px;
   border: 1px solid white;
   background-color: black;
   margin-bottom: 5px;
+   color: white;
 }
 #overlay {
   font-family: 'Press Start 2P';
@@ -104,4 +106,29 @@ canvas {
 }
 .blur {
   filter: blur(4px);
+}
+.box-shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+#startButton:hover, #restartButton:hover {
+  background-color: #333;
+  border-color: #fff;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+#gameContainer {
+  position: relative;
+  margin-top: 50px;
+}
+
+#gameInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.rounded {
+  border-radius: 8px;
 }
