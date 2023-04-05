@@ -225,15 +225,23 @@ function clearRows() {
   let linesCleared = 0;
   const boardWidth = board[0].length;
 
-  outer: for (let y = board.length - 1; y >= 0; y--) {
+  for (let y = board.length - 1; y >= 0;) {
+    let isRowComplete = true;
+
     for (let x = 0; x < boardWidth; x++) {
       if (board[y][x] === 0) {
-        continue outer;
+        isRowComplete = false;
+        break;
       }
     }
-    board.splice(y, 1);
-    board.unshift(new Array(boardWidth).fill(0));
-    linesCleared++;
+
+    if (isRowComplete) {
+      board.splice(y, 1);
+      board.unshift(new Array(boardWidth).fill(0));
+      linesCleared++;
+    } else {
+      y--; // Move to the next row only if the current row is not complete
+    }
   }
 
   if (linesCleared > 0) {
@@ -395,6 +403,14 @@ updateLevel(level);
 document.getElementById('restartButton').addEventListener('click', resetGame);
 document.getElementById('newGame').addEventListener('click', newGame);
 updateLevel(level);
+document.getElementById('leftButton').addEventListener('touchstart', () => move(-1));
+document.getElementById('leftButton').addEventListener('click', () => move(-1));
+document.getElementById('rightButton').addEventListener('touchstart', () => move(1));
+document.getElementById('rightButton').addEventListener('click', () => move(1));
+document.getElementById('downButton').addEventListener('touchstart', () => drop());
+document.getElementById('downButton').addEventListener('click', () => drop());
+document.getElementById('rotateButton').addEventListener('touchstart', () => rotate());
+document.getElementById('rotateButton').addEventListener('click', () => rotate());
 
 
 reset();
