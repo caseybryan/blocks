@@ -1,3 +1,4 @@
+document.addEventListener('DOMContentLoaded', function() {
 let gameRunning = false;
 let score = 0;
 let levelElement = document.getElementById('level');
@@ -375,3 +376,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 reset();
 update();
+});
