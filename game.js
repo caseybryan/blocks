@@ -24,8 +24,8 @@ function resetGame() {
   // Call the startGame function to reinitialize the game
   startGame();
 }
-
 const gameOverElement = document.getElementById('gameOver');
+const restartButton = document.getElementById('restartButton');
 const blurElement = document.getElementById('overlay');
 
 let dropCounter = 0;
