@@ -25,7 +25,7 @@
       <div>
         <h1>Tetris</h1>
         <p>Press "Start" to begin the game.</p>
-        <button id="startButton">Start</button>
+        <button id="startButton" class="rounded">Start</button>
       </div>
     </div>
     <div id="gameContainer">
@@ -34,12 +34,13 @@
         id="gameOverCanvas"
         width="320"
         height="640"
-        style="display: none;"
+        
       ></canvas>
     </div>
     <div id="gameInfo">
-      <div id="score">Score: 0</div>
-      <div id="level">Level: 1</div>
+      <div id="score" class='rounded'>Score: 0</div>
+      <div id="level"class='rounded'>Level: 1</div>
+      <button id="newGame" class="rounded">New Game</button>
     </div>
     
     <script src="game.js"></script>
