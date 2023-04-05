@@ -367,7 +367,23 @@ function update(time = 0) {
   requestAnimationFrame(update);
 }
 
+function resetGame() {
+  // Reset necessary game variables to their initial state
+  console.log("reset() function called");
+  score = 0;
+  updateScore(score);
+  level = 1;
+  updateLevel(level);
+  linesClearedTotal = 0;
+  dropInterval = baseDropInterval;
 
+  // Hide the game over screen and overlay
+  gameOverElement.style.display = 'none';
+  document.getElementById('overlay').style.display = 'none';
+
+  // Call the startGame function to reinitialize the game
+  startGame();
+}
 document.getElementById('startButton').addEventListener('click', startGame);
 updateLevel(level);
 document.getElementById('restartButton').addEventListener('click', resetGame);
