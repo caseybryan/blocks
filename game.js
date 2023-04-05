@@ -17,9 +17,9 @@ function resetGame() {
   dropInterval = baseDropInterval;
 
   // Hide the game over screen and overlay
-  gameOverElement.style.display = 'none';
-  document.getElementById('overlay').style.display = 'none';
-   document.getElementById('overlay').style.display = 'none';
+  gameOverElement.styles.display = 'none';
+  document.getElementById('overlay').styles.display = 'none';
+   document.getElementById('overlay').styles.display = 'none';
 
   // Call the startGame function to reinitialize the game
   startGame();
