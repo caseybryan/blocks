@@ -407,8 +407,6 @@ document.getElementById('leftButton').addEventListener('touchstart', () => move(
 document.getElementById('leftButton').addEventListener('click', () => move(-1));
 document.getElementById('rightButton').addEventListener('touchstart', () => move(1));
 document.getElementById('rightButton').addEventListener('click', () => move(1));
-document.getElementById('downButton').addEventListener('touchstart', () => drop());
-document.getElementById('downButton').addEventListener('click', () => drop());
 document.getElementById('rotateButton').addEventListener('touchstart', () => rotate());
 document.getElementById('rotateButton').addEventListener('click', () => rotate());
 
