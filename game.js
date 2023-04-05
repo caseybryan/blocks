@@ -1,4 +1,3 @@
-document.addEventListener('DOMContentLoaded', function() {
 let gameRunning = false;
 let score = 0;
 let levelElement = document.getElementById('level');
@@ -20,9 +19,6 @@ function resetGame() {
   // Hide the game over screen and overlay
   gameOverElement.style.display = 'none';
   document.getElementById('overlay').style.display = 'none';
-
-  // Set gameOver to false
-  gameOver = false;
 
   // Call the startGame function to reinitialize the game
   startGame();
@@ -287,6 +283,7 @@ function gameLoop() {
   draw();
   drop();
   requestAnimationFrame(gameLoop);
+  gameOverAnimation();
 }
 
 document.addEventListener('keydown', (e) => {
@@ -372,8 +369,9 @@ function update(time = 0) {
 document.getElementById('startButton').addEventListener('click', startGame);
 updateLevel(level);
 
-
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('restartButton').addEventListener('click', resetGame);
+});
 
 reset();
 update();
-});
