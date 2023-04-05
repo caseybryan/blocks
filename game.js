@@ -370,9 +370,7 @@ function update(time = 0) {
 document.getElementById('startButton').addEventListener('click', startGame);
 updateLevel(level);
 
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('restartButton').addEventListener('click', resetGame);
-});
+
 
 reset();
 update();
