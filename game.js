@@ -20,7 +20,9 @@ function resetGame() {
   // Hide the game over screen and overlay
   gameOverElement.style.display = 'none';
   document.getElementById('overlay').style.display = 'none';
-   document.getElementById('overlay').style.display = 'none';
+
+  // Set gameOver to false
+  gameOver = false;
 
   // Call the startGame function to reinitialize the game
   startGame();
