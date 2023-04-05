@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+
 let gameRunning = false;
 let score = 0;
 let levelElement = document.getElementById('level');
@@ -10,6 +11,7 @@ function updateLevel(newLevel) {
 
 function resetGame() {
   // Reset necessary game variables to their initial state
+  console.log("reset() function called");
   score = 0;
   updateScore(score);
   level = 1;
@@ -24,8 +26,8 @@ function resetGame() {
   // Call the startGame function to reinitialize the game
   startGame();
 }
+
 const gameOverElement = document.getElementById('gameOver');
-const restartButton = document.getElementById('restartButton');
 const blurElement = document.getElementById('overlay');
 
 let dropCounter = 0;
@@ -366,17 +368,11 @@ function update(time = 0) {
 }
 
 
-
 document.getElementById('startButton').addEventListener('click', startGame);
 updateLevel(level);
+document.getElementById('restartButton').addEventListener('click', resetGame);
 
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('restartButton').addEventListener('click', resetGame);
-});
-  restartButton.addEventListener('click', function() {
-    startGame();
-  });
 
 reset();
 update();
-  });
+ });
