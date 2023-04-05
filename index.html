@@ -1,25 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tetris</title>
-    <link
-      rel="preconnect"
-      href="https://fonts.googleapis.com"
-      crossorigin
-    />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
     <div id="startScreen">
       <div>
@@ -30,24 +21,26 @@
     </div>
     <div id="gameContainer">
       <canvas id="gameBoard" width="320" height="640"></canvas>
-      <canvas
-        id="gameOverCanvas"
-        width="320"
-        height="640"
-        
-      ></canvas>
+      <canvas id="gameOverCanvas" width="320" height="640"></canvas>
+      <div id="controls">
+        <button id="leftButton" class="arrowButton">Left</button>
+        <button id="rotateButton" class="rotateButton">Rotate</button>
+        <button id="rightButton" class="arrowButton">Right</button>
+
+      </div>
     </div>
     <div id="gameInfo">
       <div id="score" class='rounded'>Score: 0</div>
-      <div id="level"class='rounded'>Level: 1</div>
+      <div id="level" class='rounded'>Level: 1</div>
       <button id="newGame" class="rounded">New Game</button>
     </div>
-    
-    <script src="game.js"></script>
-  </body>
-  <div id="overlay"></div>
+
+    <div id="overlay"></div>
     <div id="gameOver" class="game-over">
       <h1>Game Over</h1>
       <button id="restartButton">Try Again?</button>
     </div>
+    <script src="game.js"></script>
+  </body>
+
 </html>
