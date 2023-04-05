@@ -373,6 +373,9 @@ updateLevel(level);
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('restartButton').addEventListener('click', resetGame);
 });
+  restartButton.addEventListener('click', function() {
+    startGame();
+  });
 
 reset();
 update();
