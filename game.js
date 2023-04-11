@@ -426,6 +426,8 @@ document.getElementById('rightButton').addEventListener('click', () => move(1));
 document.getElementById('rotateButton').addEventListener('touchstart', () => rotate());
 document.getElementById('rotateButton').addEventListener('click', () => rotate());
 document.getElementById('pauseButton').addEventListener('click', togglePause);
+document.getElementById('pause').addEventListener('click', togglePause);
+
   
 
 
