@@ -11,15 +11,16 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Added a new function to toggle pause and resume
-  function togglePause() {
-    gameRunning = !gameRunning;
-    if (gameRunning) {
-      pauseElement.innerText = "Pause";
-      update();
-    } else {
-      pauseElement.innerText = "Resume";
-    }
-  }  
+function togglePause() {
+  gameRunning = !gameRunning;
+  if (gameRunning) {
+    pauseElement.innerText = "Pause";
+    update();
+  } else {
+    pauseElement.innerText = "Resume";
+  }
+}
+
   
 function resetGame() {
   // Reset necessary game variables to their initial state
@@ -425,6 +426,7 @@ document.getElementById('rightButton').addEventListener('click', () => move(1));
 document.getElementById('rotateButton').addEventListener('touchstart', () => rotate());
 document.getElementById('rotateButton').addEventListener('click', () => rotate());
 document.getElementById('pauseButton').addEventListener('click', togglePause);
+  
 
 
 reset();
