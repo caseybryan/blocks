@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let gameRunning = false;
   let score = 0;
   let levelElement = document.getElementById('level');
-  let pauseElement = document.getElementById('pause');
+let pauseElement = document.getElementById('pauseButton');
 
   function updateLevel(newLevel) {
     level = newLevel;
