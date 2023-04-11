@@ -398,15 +398,15 @@ function update(time = 0) {
     return;
   }
 
-  if (!gameRunning) return; // Don't update the game if it's not running
+  if (gameRunning) {
+    const deltaTime = time - lastTime;
+    lastTime = time;
 
-  const deltaTime = time - lastTime;
-  lastTime = time;
-
-  dropCounter += deltaTime;
-  if (dropCounter > dropInterval) {
-    drop();
-    dropCounter = 0;
+    dropCounter += deltaTime;
+    if (dropCounter > dropInterval) {
+      drop();
+      dropCounter = 0;
+    }
   }
 
   draw();
