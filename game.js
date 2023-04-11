@@ -1,14 +1,26 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-let gameRunning = false;
-let score = 0;
-let levelElement = document.getElementById('level');
+  let gameRunning = false;
+  let score = 0;
+  let levelElement = document.getElementById('level');
+  let pauseElement = document.getElementById('pause');
 
-function updateLevel(newLevel) {
-  level = newLevel;
-  levelElement.innerText = "Level: " + level;
-}
+  function updateLevel(newLevel) {
+    level = newLevel;
+    levelElement.innerText = "Level: " + level;
+  }
 
+  // Added a new function to toggle pause and resume
+  function togglePause() {
+    gameRunning = !gameRunning;
+    if (gameRunning) {
+      pauseElement.innerText = "Pause";
+      update();
+    } else {
+      pauseElement.innerText = "Resume";
+    }
+  }  
+  
 function resetGame() {
   // Reset necessary game variables to their initial state
   console.log("reset() function called");
@@ -38,6 +50,18 @@ function newGame() {
   updateLevel(level);
   linesClearedTotal = 0;
   dropInterval = baseDropInterval;
+  
+   let gameSpeed = 1;
+
+  function levelUp(linesCleared) {
+    linesClearedTotal += linesCleared;
+    if (linesClearedTotal >= level * 10) {
+      level++;
+      gameSpeed = level;
+      dropInterval = baseDropInterval / gameSpeed;
+      updateLevel(level);
+    }
+  }
 
   // Hide the game over screen and overlay
   gameOverElement.style.display = 'none';
@@ -58,29 +82,20 @@ const baseDropInterval = 1000; // In milliseconds
 
 let linesClearedTotal = 0;
 
-function levelUp(linesCleared) {
-  linesClearedTotal += linesCleared;
-  if (linesClearedTotal >= level * 10) {
-    level++;
-    dropInterval = 1000 / level;
-    updateLevel(level);
-  }
-}
-
 
 const canvas = document.getElementById('gameBoard');
 const ctx = canvas.getContext('2d');
 const blockSize = 32;
 
-const tetrominoColors = [
-  'cyan',
-  'yellow',
-  'purple',
-  'green',
-  'red',
-  'blue',
-  'orange'
-];
+ const tetrominoColors = [
+    '#00FFFF', // cyan
+    '#FFFF00', // yellow
+    '#FF00FF', // purple
+    '#32CD32', // lime green
+    '#FF0000', // red
+    '#0000FF', // blue
+    '#FFA500'  // orange
+  ];
 
 const tetrominoes = [
   [
@@ -409,6 +424,7 @@ document.getElementById('rightButton').addEventListener('touchstart', () => move
 document.getElementById('rightButton').addEventListener('click', () => move(1));
 document.getElementById('rotateButton').addEventListener('touchstart', () => rotate());
 document.getElementById('rotateButton').addEventListener('click', () => rotate());
+document.getElementById('pauseButton').addEventListener('click', togglePause);
 
 
 reset();
