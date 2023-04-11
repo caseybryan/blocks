@@ -90,12 +90,12 @@ const blockSize = 32;
 
  const tetrominoColors = [
     '#00FFFF', // cyan
-    '#FFFF00', // yellow
+    '#00b3b3', // darker cyan
     '#FF00FF', // purple
-    '#32CD32', // lime green
-    '#FF0000', // red
+    '#ff00bf', // pink
+    '#b30086', // dark purple
     '#0000FF', // blue
-    '#FFA500'  // orange
+    '#ffcc00'  // yellow
   ];
 
 const tetrominoes = [
