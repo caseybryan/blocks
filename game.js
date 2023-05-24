@@ -45,12 +45,13 @@ function getCookie(name) {
 }
 
 // Function to save the high score
-function saveHighScore(email, score) {
+function saveHighScore(email) {
   var highScore = getCookie(email);
   if (highScore === null || score > highScore) {
     setCookie(email, score, 30); // Save the high score for 30 days
   }
 }
+
 
 // Function to retrieve the high score
 function getHighScore(email) {
@@ -59,7 +60,6 @@ function getHighScore(email) {
 
 // Usage
 var email = document.getElementById('email').value; // Assuming you have an input field with id 'email'
-var score = 100; // Your score
 saveHighScore(email, score);
 
   
@@ -473,6 +473,11 @@ document.getElementById('rotateButton').addEventListener('touchstart', () => rot
 document.getElementById('rotateButton').addEventListener('click', () => rotate());
 document.getElementById('pauseButton').addEventListener('click', togglePause);
 document.getElementById('pause').addEventListener('click', togglePause);
+document.getElementById('submitEmail').addEventListener('click', function() {
+  var email = document.getElementById('email').value;
+  saveHighScore(email);
+});
+
 
   
 
