@@ -3,7 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
   let gameRunning = false;
   let score = 0;
   let levelElement = document.getElementById('level');
-let pauseElement = document.getElementById('pauseButton');
+  let pauseElement = document.getElementById('pauseButton');
+  let linesCleared = 0;
+
 
   function updateLevel(newLevel) {
     level = newLevel;
@@ -95,6 +97,14 @@ function newGame() {
   
    let gameSpeed = 1;
 
+  
+function clearLines() {
+  // Existing code to check and clear lines
+  // ...
+
+  // When a line is cleared
+  linesCleared++;
+  
   function levelUp(linesCleared) {
     linesClearedTotal += linesCleared;
     if (linesClearedTotal >= level * 10) {
@@ -459,7 +469,7 @@ function update(time = 0) {
   requestAnimationFrame(update);
 }
 
-
+document.getElementById('linesCleared').innerText = 'Lines Cleared: ' + linesCleared;
 document.getElementById('startButton').addEventListener('click', startGame);
 updateLevel(level);
 document.getElementById('restartButton').addEventListener('click', resetGame);
