@@ -100,18 +100,8 @@ function newGame() {
   updateLevel(level);
   linesClearedTotal = 0;
   dropInterval = baseDropInterval;
-  
-   let gameSpeed = 1;
-
-  function levelUp(linesCleared) {
-    linesClearedTotal += linesCleared;
-    if (linesClearedTotal >= level * 10) {
-      level++;
-      gameSpeed = level;
-      dropInterval = baseDropInterval / gameSpeed;
-      updateLevel(level);
-    }
-  }
+  gameSpeed = 1;
+  levelUp(0);
 
   // Hide the game over screen and overlay
   gameOverElement.style.display = 'none';
@@ -131,6 +121,18 @@ let level = 1;
 const baseDropInterval = 1000; // In milliseconds
 
 let linesClearedTotal = 0;
+
+let gameSpeed = 1;
+
+function levelUp(linesCleared) {
+  linesClearedTotal += linesCleared;
+  if (linesClearedTotal >= level * 10) {
+    level++;
+    gameSpeed = level;
+    dropInterval = baseDropInterval / gameSpeed;
+    updateLevel(level);
+  }
+}
 
 
 const canvas = document.getElementById('gameBoard');
