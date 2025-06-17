@@ -44,6 +44,14 @@ function getCookie(name) {
   return null;
 }
 
+  if (typeof window !== 'undefined') {
+    window.setCookie = setCookie;
+    window.getCookie = getCookie;
+  }
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { setCookie, getCookie };
+  }
+
 // Function to save the high score
 function saveHighScore(email) {
   var highScore = getCookie(email);
