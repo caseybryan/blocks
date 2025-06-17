@@ -73,6 +73,7 @@ function resetGame() {
   updateLevel(level);
   linesClearedTotal = 0;
   dropInterval = baseDropInterval;
+  gameSpeed = 1;
 
   // Hide the game over screen and overlay
   gameOverElement.style.display = 'none';
@@ -92,18 +93,7 @@ function newGame() {
   updateLevel(level);
   linesClearedTotal = 0;
   dropInterval = baseDropInterval;
-  
-   let gameSpeed = 1;
-
-  function levelUp(linesCleared) {
-    linesClearedTotal += linesCleared;
-    if (linesClearedTotal >= level * 10) {
-      level++;
-      gameSpeed = level;
-      dropInterval = baseDropInterval / gameSpeed;
-      updateLevel(level);
-    }
-  }
+  gameSpeed = 1;
 
   // Hide the game over screen and overlay
   gameOverElement.style.display = 'none';
@@ -123,6 +113,17 @@ let level = 1;
 const baseDropInterval = 1000; // In milliseconds
 
 let linesClearedTotal = 0;
+let gameSpeed = 1;
+
+function levelUp(linesCleared) {
+  linesClearedTotal += linesCleared;
+  if (linesClearedTotal >= level * 10) {
+    level++;
+    gameSpeed = level;
+    dropInterval = baseDropInterval / gameSpeed;
+    updateLevel(level);
+  }
+}
 
 
 const canvas = document.getElementById('gameBoard');
@@ -472,7 +473,6 @@ document.getElementById('rightButton').addEventListener('click', () => move(1));
 document.getElementById('rotateButton').addEventListener('touchstart', () => rotate());
 document.getElementById('rotateButton').addEventListener('click', () => rotate());
 document.getElementById('pauseButton').addEventListener('click', togglePause);
-document.getElementById('pause').addEventListener('click', togglePause);
 document.getElementById('submitEmail').addEventListener('click', function() {
   var email = document.getElementById('email').value;
   saveHighScore(email);
