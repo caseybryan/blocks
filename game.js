@@ -10,7 +10,7 @@ let pauseElement = document.getElementById('pauseButton');
     levelElement.innerText = "Level: " + level;
   }
 
-  // Added a new function to toggle pause and resume
+  // Toggle game pause/resume state
 function togglePause() {
   gameRunning = !gameRunning;
   if (gameRunning) {
