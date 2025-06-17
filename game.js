@@ -428,7 +428,7 @@ function gameOverAnimation() {
 
 
 function startGame() {
-  console.log("start() function called");
+  console.log("startGame() function called");
 
   if (gameRunning) return;
 
