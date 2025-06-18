@@ -4,8 +4,8 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
-  background-color: #222;
-  background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/845e3a94-74ab-4446-b4c5-e76586e3199f/de151gn-3709c031-73dd-4045-a8b1-32c5591bc09d.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzg0NWUzYTk0LTc0YWItNDQ0Ni1iNGM1LWU3NjU4NmUzMTk5ZlwvZGUxNTFnbi0zNzA5YzAzMS03M2RkLTQwNDUtYThiMS0zMmM1NTkxYmMwOWQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.PfFXOFriaABuTw1yz8IxgeKjUL5FN4y0o64y_AwgauQ');
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg,#121212,#2b2b2b);
 }
 
 #mainContainer {
@@ -16,20 +16,25 @@ body {
 }
 
 canvas {
-  border: 1px solid #fff;
+  border: none;
+  background-color: #111;
 }
 
 #gameOver {
-  font-family: 'Press Start 2P';
+  font-family: 'Press Start 2P', cursive;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  font-size: 40px;
-  color: white;
+  font-size: 32px;
+  color: #fff;
   display: none;
   z-index: 11;
+  padding: 20px 30px;
+  background: rgba(0,0,0,0.8);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
 #startScreen {
@@ -38,14 +43,14 @@ canvas {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  font-family: 'Press Start 2P';
+  font-family: 'Press Start 2P', cursive;
   font-size: 24px;
-  color: white;
+  color: #fff;
   z-index: 11;
-  padding: 20px;
-  border: 1px solid white;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 8px;
+  padding: 20px 30px;
+  background: rgba(0,0,0,0.7);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
 #controls {
@@ -59,37 +64,44 @@ flex-wrap: wrap;
 
 .arrowButton,
 .rotateButton {
-font-family: 'Press Start 2P';
-font-size: 1rem;
-padding: 8px 16px;
-border: 2px solid #ccc;
-background-color: #444;
-color: #fff;
-cursor: pointer;
-transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  background-color: #ff4757;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  transition: background-color 0.3s;
 }
 
 .arrowButton:hover,
 .rotateButton:hover {
-background-color: #333;
-color: #fff;
-border-color: #fff;
+  background-color: #e84149;
 }
 
 #startButton, #restartButton, #pauseButton {
-font-size: 16px;
-font-family: 'Press Start 2P';
-padding: 10px;
-border: 1px solid white;
-color: white;
-background-color: #444;
-cursor: pointer;
-transition: background-color 0.3s, border-color 0.3s;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 10px 20px;
+  border: none;
+  background-color: #1e90ff;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  transition: background-color 0.3s;
 }
 
 #gameContainer {
-position: relative;
-margin-top: 50px;
+  position: relative;
+  margin-top: 40px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 #gameBoard {
@@ -104,37 +116,37 @@ left: 0;
 }
 
 #gameInfo {
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-position: absolute;
-bottom: 10px;
-left: 10px;
-font-family: 'Press Start 2P';
-font-size: 16px;
-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+  gap: 6px;
 }
 
 #score, #level, #newGame {
-font-family: 'Press Start 2P';
-padding: 10px;
-border: 1px solid white;
-background-color: rgba(0, 0, 0, 0.8);
-margin-bottom: 5px;
-color: white;
-border-radius: 8px;
+  font-family: inherit;
+  padding: 8px 12px;
+  border: none;
+  background-color: rgba(0,0,0,0.5);
+  color: #fff;
+  border-radius: 6px;
 }
 
 #overlay {
-font-family: 'Press Start 2P';
-display: none;
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0, 0, 0, 0.5);
-z-index: 10;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
 }
 
 .blur {
@@ -145,11 +157,18 @@ filter: blur(4px);
 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-#startButton:hover, #restartButton:hover {
-background-color: #333;
-border-color: #fff;
+#startButton:hover, #restartButton:hover, #pauseButton:hover {
+  background-color: #187bcd;
 }
 
 .rounded {
 border-radius: 8px;
+}
+
+input[type="email"] {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #222;
+  color: #fff;
 }

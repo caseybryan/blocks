@@ -7,7 +7,7 @@
     <title>Tetris</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
   </head>
 
@@ -19,7 +19,8 @@
         <button id="startButton" class="rounded">Start</button>
       </div>
     </div>
-    <div id="gameContainer">
+    <div id="mainContainer">
+  <div id="gameContainer">
       <canvas id="gameBoard" width="320" height="640"></canvas>
       <canvas id="gameOverCanvas" width="320" height="640"></canvas>
       <div id="controls">
@@ -36,6 +37,7 @@
   <button id="submitEmail" class="rounded">Submit Email</button>
   <button id="newGame" class="rounded">New Game</button>
   <button id="pauseButton" class="rounded">Pause</button>
+</div>
 </div>
 
     <div id="overlay"></div>
