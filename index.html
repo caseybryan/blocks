@@ -23,21 +23,26 @@
   <div id="gameContainer">
       <canvas id="gameBoard" width="320" height="640"></canvas>
       <canvas id="gameOverCanvas" width="320" height="640"></canvas>
+      <canvas id="nextPieceCanvas" width="96" height="96" aria-label="Next piece preview"></canvas>
+      <canvas id="holdPieceCanvas" width="96" height="96" aria-label="Held piece"></canvas>
       <div id="controls">
-        <button id="leftButton" class="arrowButton">Left</button>
-        <button id="rotateButton" class="rotateButton">Rotate</button>
-        <button id="rightButton" class="arrowButton">Right</button>
+        <button id="leftButton" class="arrowButton" aria-label="Move Left">Left</button>
+        <button id="rotateButton" class="rotateButton" aria-label="Rotate Piece">Rotate</button>
+        <button id="rightButton" class="arrowButton" aria-label="Move Right">Right</button>
+        <button id="holdButton" class="rotateButton" aria-label="Hold Piece">Hold</button>
 
       </div>
     </div>
   <div id="gameInfo">
   <div id="score" class='rounded'>Score: 0</div>
   <div id="level" class='rounded'>Level: 1</div>
+  <div id="highScore" class='rounded'>High Score: 0</div>
   <input type="email" id="email" placeholder="Enter your email">
   <button id="submitEmail" class="rounded">Submit Email</button>
   <button id="newGame" class="rounded">New Game</button>
   <button id="pauseButton" class="rounded">Pause</button>
-</div>
+  <button id="hardMode" class="rounded">Hard Mode</button>
+ </div>
 </div>
 
     <div id="overlay"></div>
