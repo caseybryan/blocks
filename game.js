@@ -44,6 +44,19 @@ function getCookie(name) {
   return null;
 }
 
+function beep(freq, duration) {
+  if (typeof AudioContext === 'undefined') return;
+  const ctx = new AudioContext();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.frequency.value = freq;
+  osc.type = 'square';
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  setTimeout(() => { osc.stop(); ctx.close(); }, duration);
+}
+
   if (typeof window !== 'undefined') {
     window.setCookie = setCookie;
     window.getCookie = getCookie;
@@ -52,23 +65,19 @@ function getCookie(name) {
     module.exports = { setCookie, getCookie };
   }
 
-// Function to save the high score
+// High score helpers using localStorage
 function saveHighScore(email) {
-  var highScore = getCookie(email);
-  if (highScore === null || score > highScore) {
-    setCookie(email, score, 30); // Save the high score for 30 days
+  var key = 'highscore_' + email;
+  var highScore = localStorage.getItem(key);
+  if (highScore === null || score > parseInt(highScore, 10)) {
+    localStorage.setItem(key, score);
   }
 }
 
-
-// Function to retrieve the high score
 function getHighScore(email) {
-  return getCookie(email);
+  return localStorage.getItem('highscore_' + email);
 }
 
-// Usage
-var email = document.getElementById('email').value; // Assuming you have an input field with id 'email'
-saveHighScore(email, score);
 
   
 function resetGame() {
@@ -102,6 +111,8 @@ function newGame() {
   dropInterval = baseDropInterval;
   gameSpeed = 1;
   levelUp(0);
+  var email = document.getElementById('email').value;
+  updateHighScoreDisplay(email);
 
   // Hide the game over screen and overlay
   gameOverElement.style.display = 'none';
@@ -118,7 +129,8 @@ let dropCounter = 0;
 let dropInterval = 1000; // In milliseconds
 
 let level = 1;
-const baseDropInterval = 1000; // In milliseconds
+let baseDropInterval = 1000; // In milliseconds
+let isHardMode = false;
 
 let linesClearedTotal = 0;
 
@@ -139,7 +151,7 @@ const canvas = document.getElementById('gameBoard');
 const ctx = canvas.getContext('2d');
 const blockSize = 32;
 
- const tetrominoColors = [
+const tetrominoColors = [
     '#00FFFF', // cyan
     '#00b3b3', // darker cyan
     '#FF00FF', // purple
@@ -148,6 +160,15 @@ const blockSize = 32;
     '#0000FF', // blue
     '#ffcc00'  // yellow
   ];
+
+function randomTetromino() {
+  const randomIndex = Math.floor(Math.random() * tetrominoes.length);
+  const randomPiece = tetrominoes[randomIndex];
+  return {
+    shape: [...randomPiece[Math.floor(Math.random() * randomPiece.length)]],
+    color: tetrominoColors[randomIndex]
+  };
+}
 
 const tetrominoes = [
   [
@@ -218,18 +239,22 @@ let piece = {
   x: 0,
   y: 0,
   shape: null,
+  color: '#fff'
 };
+let nextPiece = randomTetromino();
+let holdPiece = null;
+let holdUsed = false;
 
 let gameOver = false;
 
 
 function reset() {
-  const randomIndex = Math.floor(Math.random() * tetrominoes.length);
-  const randomPiece = tetrominoes[randomIndex];
-  piece.shape = [...randomPiece[Math.floor(Math.random() * randomPiece.length)]];
-  piece.color = tetrominoColors[randomIndex];
+  piece = nextPiece;
   piece.y = 0;
   piece.x = Math.floor(canvas.width / (2 * blockSize)) - 1;
+  nextPiece = randomTetromino();
+  holdUsed = false;
+  drawNextPiece();
 }
 
 
@@ -279,6 +304,7 @@ function rotate() {
   if (collide()) {
     piece.shape = piece.shape[0].map((_, i) => piece.shape.map(row => row[i])).reverse();
   }
+  beep(600, 80);
 }
 
 function move(dir) {
@@ -286,6 +312,24 @@ function move(dir) {
   if (collide()) {
     piece.x -= dir;
   }
+}
+
+function holdCurrentPiece() {
+  if (holdUsed) return;
+  if (!holdPiece) {
+    holdPiece = {shape: piece.shape, color: piece.color};
+    reset();
+  } else {
+    let temp = {shape: piece.shape, color: piece.color};
+    piece.shape = holdPiece.shape;
+    piece.color = holdPiece.color;
+    holdPiece = temp;
+    piece.x = Math.floor(canvas.width / (2 * blockSize)) - 1;
+    piece.y = 0;
+    drawNextPiece();
+  }
+  holdUsed = true;
+  drawNextPiece();
 }
 
 function clearRows() {
@@ -315,15 +359,24 @@ function clearRows() {
     const lineScores = [40, 100, 300, 1200];
     score += lineScores[linesCleared - 1] * level;
     levelUp(linesCleared);
+    beep(400, 100);
   }
 }
 
 
 let scoreElement = document.getElementById('score');
+let highScoreElement = document.getElementById('highScore');
 
 function updateScore(newScore) {
   score = newScore;
   scoreElement.innerText = "Score: " + score + " | Level: " + level;
+}
+
+function updateHighScoreDisplay(email) {
+  if(!email) return;
+  var hs = getHighScore(email);
+  if (hs === null) hs = 0;
+  highScoreElement.innerText = "High Score: " + hs;
 }
 
 
@@ -348,6 +401,38 @@ function drawBlock(x, y, color) {
   ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
   ctx.strokeStyle = 'black';
   ctx.strokeRect(x * blockSize, y * blockSize, blockSize, blockSize);
+}
+
+function drawPieceToCanvas(pieceObj, canvasId) {
+  const cvs = document.getElementById(canvasId);
+  if(!cvs) return;
+  const c = cvs.getContext('2d');
+  c.clearRect(0,0,cvs.width,cvs.height);
+  const offX = Math.floor((cvs.width / blockSize - pieceObj.shape[0].length)/2);
+  const offY = Math.floor((cvs.height / blockSize - pieceObj.shape.length)/2);
+  for(let y=0;y<pieceObj.shape.length;y++){
+    for(let x=0;x<pieceObj.shape[y].length;x++){
+      if(pieceObj.shape[y][x] !== '0'){
+        c.fillStyle = pieceObj.color;
+        c.fillRect((x+offX)*blockSize,(y+offY)*blockSize,blockSize,blockSize);
+        c.strokeStyle='black';
+        c.strokeRect((x+offX)*blockSize,(y+offY)*blockSize,blockSize,blockSize);
+      }
+    }
+  }
+}
+
+function drawNextPiece(){
+  drawPieceToCanvas(nextPiece,'nextPieceCanvas');
+  if(holdPiece){
+    drawPieceToCanvas(holdPiece,'holdPieceCanvas');
+  } else {
+    const cvs = document.getElementById('holdPieceCanvas');
+    if(cvs){
+      const ctxh = cvs.getContext('2d');
+      ctxh.clearRect(0,0,cvs.width,cvs.height);
+    }
+  }
 }
 
 function draw() {
@@ -393,6 +478,8 @@ document.addEventListener('keydown', (e) => {
     move(-1);
   } else if (e.key === 'ArrowDown') {
     drop();
+  } else if (e.key === 'Shift') {
+    holdCurrentPiece();
   }
 });
 
@@ -415,10 +502,12 @@ function gameOverAnimation() {
       gameRunning = false;
       gameOverElement.style.display = 'block';
       document.getElementById('overlay').style.display = 'block'; // Show the overlay
+      beep(200,200);
 
       // Save the high score when the game is over
       var email = document.getElementById('email').value; // Assuming you have an input field with id 'email'
       saveHighScore(email, score);
+      updateHighScoreDisplay(email);
        
     }, 1000);
   } else {
@@ -439,6 +528,8 @@ function startGame() {
   board.forEach(row => row.fill(0));
   score = 0;
   updateScore(score);
+  var email = document.getElementById('email').value;
+  updateHighScoreDisplay(email);
   reset();
   update();
 }
@@ -481,11 +572,20 @@ document.getElementById('rightButton').addEventListener('touchstart', () => move
 document.getElementById('rightButton').addEventListener('click', () => move(1));
 document.getElementById('rotateButton').addEventListener('touchstart', () => rotate());
 document.getElementById('rotateButton').addEventListener('click', () => rotate());
+document.getElementById('holdButton').addEventListener('click', holdCurrentPiece);
+document.getElementById('holdButton').addEventListener('touchstart', holdCurrentPiece);
 document.getElementById('pauseButton').addEventListener('click', togglePause);
 document.getElementById('pause').addEventListener('click', togglePause);
+document.getElementById('hardMode').addEventListener('click', function(){
+  isHardMode = !isHardMode;
+  baseDropInterval = isHardMode ? 500 : 1000;
+  dropInterval = baseDropInterval;
+  this.innerText = isHardMode ? 'Normal Mode' : 'Hard Mode';
+});
 document.getElementById('submitEmail').addEventListener('click', function() {
   var email = document.getElementById('email').value;
   saveHighScore(email);
+  updateHighScoreDisplay(email);
 });
 
 
@@ -494,4 +594,5 @@ document.getElementById('submitEmail').addEventListener('click', function() {
 
 reset();
 update();
+drawNextPiece();
  });

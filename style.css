@@ -104,6 +104,12 @@ flex-wrap: wrap;
   overflow: hidden;
 }
 
+#nextPieceCanvas, #holdPieceCanvas {
+  background-color: rgba(0,0,0,0.5);
+  margin-top: 8px;
+  border-radius: 4px;
+}
+
 #gameBoard {
 position: relative;
 z-index: 2;
@@ -129,7 +135,7 @@ left: 0;
   gap: 6px;
 }
 
-#score, #level, #newGame {
+#score, #level, #highScore, #newGame {
   font-family: inherit;
   padding: 8px 12px;
   border: none;
@@ -171,4 +177,15 @@ input[type="email"] {
   border: 1px solid #555;
   background-color: #222;
   color: #fff;
+}
+
+@media (max-width: 480px) {
+  #gameBoard {
+    width: 240px;
+    height: 480px;
+  }
+  #gameInfo {
+    right: 5px;
+    font-size: 12px;
+  }
 }
