@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMYK + White Color Mixer</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin: 0;
+      padding: 18px;
+      background: #0b0f14;
+      color: #e8eef6;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0.2px;
+    }
+
+    .sub {
+      margin: 0;
+      opacity: 0.78;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .tog {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.25);
+      user-select: none;
+      font-weight: 650;
+      letter-spacing: 0.2px;
+      min-height: 44px; /* iOS touch target */
+    }
+    .tog input { width: 18px; height: 18px; }
+
+    .preview {
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.14);
+      height: 300px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preview::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(900px 260px at 50% 0%, rgba(255,255,255,0.18), transparent 60%);
+      pointer-events: none;
+    }
+
+    .chip {
+      position: relative;
+      z-index: 1;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.40);
+      border: 1px solid rgba(255,255,255,0.16);
+      backdrop-filter: blur(8px);
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      min-height: 44px;
+    }
+
+    .dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.35); }
+
+    .grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 120px 52px 1fr 52px 64px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 750;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+
+    .sw {
+      width: 16px; height: 16px; border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.22);
+    }
+
+    .step {
+      min-height: 44px;
+      min-width: 44px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.10);
+      color: inherit;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .step:active { transform: translateY(1px); }
+
+    .pct {
+      display: grid;
+      place-items: center;
+      min-height: 44px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.25);
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 34px;
+      background: transparent;
+    }
+
+    /* Bigger thumb on iOS/Safari */
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      margin-top: -10px;
+      background: rgba(255,255,255,0.92);
+      border: 2px solid rgba(0,0,0,0.35);
+    }
+
+    /* Firefox */
+    input[type="range"]::-moz-range-track {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.92);
+      border: 2px solid rgba(0,0,0,0.35);
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .pill {
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.22);
+      display: grid;
+      gap: 4px;
+      min-height: 44px;
+    }
+
+    .pill b { font-size: 12px; opacity: 0.75; }
+    .pill code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .btns { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+    button.action {
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      color: inherit;
+      padding: 12px 14px;
+      border-radius: 16px;
+      cursor: pointer;
+      font-weight: 750;
+      letter-spacing: 0.2px;
+      min-height: 48px;
+    }
+    button.action:hover { background: rgba(255,255,255,0.12); }
+    button.action:active { transform: translateY(1px); }
+
+    .presets {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .preset {
+      min-height: 48px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.20);
+      cursor: pointer;
+      font-weight: 750;
+      letter-spacing: 0.2px;
+    }
+    .preset:active { transform: translateY(1px); }
+
+    .history {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .tile {
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.14);
+      overflow: hidden;
+      cursor: pointer;
+      min-height: 86px;
+      display: grid;
+      grid-template-rows: 1fr auto;
+    }
+
+    .tile small {
+      background: rgba(0,0,0,0.35);
+      padding: 9px 10px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      letter-spacing: 0.2px;
+      border-top: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .hint { opacity: 0.72; font-size: 12px; margin-top: 10px; line-height: 1.35; }
+
+    /* Kid mode: hide nerdy stuff + make everything bigger */
+    body.kid .sub { display: none; }
+    body.kid .meta { display: none; }
+    body.kid .hint { display: none; }
+    body.kid .chip { font-size: 18px; }
+
+    @media (max-width: 860px) {
+      .wrap { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      .row { grid-template-columns: 110px 52px 1fr 52px 64px; }
+      .history { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <div class="topbar">
+        <div>
+          <h1>CMYK + White Color Mixer</h1>
+          <p class="sub">Drag sliders, tap +/−, save swatches. Kid Mode hides the hex gobbledygook.</p>
+        </div>
+        <label class="tog" title="Kid Mode">
+          <input id="kidMode" type="checkbox" />
+          Kid Mode 🧒
+        </label>
+      </div>
+
+      <div id="preview" class="preview">
+        <div class="chip">
+          <span id="dot" class="dot"></span>
+          <span id="chipLabel">#FFFFFF</span>
+        </div>
+      </div>
+
+      <div class="presets" aria-label="Presets">
+        <button class="preset" data-preset="sky">🌤️ Sky</button>
+        <button class="preset" data-preset="grass">🌿 Grass</button>
+        <button class="preset" data-preset="grape">🍇 Grape</button>
+        <button class="preset" data-preset="orange">🍊 Orange</button>
+        <button class="preset" data-preset="ocean">🌊 Ocean</button>
+        <button class="preset" data-preset="night">🌙 Night</button>
+        <button class="preset" data-preset="snow">❄️ Snow</button>
+      </div>
+
+      <div class="grid">
+        <div class="row">
+          <div class="label"><span class="sw" style="background:#00bcd4"></span> Cyan</div>
+          <button class="step" data-step="c" data-dir="-">−</button>
+          <input id="c" type="range" min="0" max="100" value="0" />
+          <button class="step" data-step="c" data-dir="+">+</button>
+          <div class="pct" id="cPct">0%</div>
+        </div>
+        <div class="row">
+          <div class="label"><span class="sw" style="background:#ff2ea6"></span> Magenta</div>
+          <button class="step" data-step="m" data-dir="-">−</button>
+          <input id="m" type="range" min="0" max="100" value="0" />
+          <button class="step" data-step="m" data-dir="+">+</button>
+          <div class="pct" id="mPct">0%</div>
+        </div>
+        <div class="row">
+          <div class="label"><span class="sw" style="background:#ffd400"></span> Yellow</div>
+          <button class="step" data-step="y" data-dir="-">−</button>
+          <input id="y" type="range" min="0" max="100" value="0" />
+          <button class="step" data-step="y" data-dir="+">+</button>
+          <div class="pct" id="yPct">0%</div>
+        </div>
+        <div class="row">
+          <div class="label"><span class="sw" style="background:#000"></span> Black</div>
+          <button class="step" data-step="k" data-dir="-">−</button>
+          <input id="k" type="range" min="0" max="100" value="0" />
+          <button class="step" data-step="k" data-dir="+">+</button>
+          <div class="pct" id="kPct">0%</div>
+        </div>
+        <div class="row">
+          <div class="label"><span class="sw" style="background:#fff"></span> White</div>
+          <button class="step" data-step="w" data-dir="-">−</button>
+          <input id="w" type="range" min="0" max="100" value="0" />
+          <button class="step" data-step="w" data-dir="+">+</button>
+          <div class="pct" id="wPct">0%</div>
+        </div>
+      </div>
+
+      <div class="meta">
+        <div class="pill">
+          <b>RGB</b>
+          <code id="rgbLabel">rgb(255, 255, 255)</code>
+        </div>
+        <div class="pill">
+          <b>CMYK + W</b>
+          <code id="cmyLabel">cmykw(0%, 0%, 0%, 0%, 0%)</code>
+        </div>
+        <div class="pill">
+          <b>HEX</b>
+          <code id="hexCode">#FFFFFF</code>
+        </div>
+        <div class="pill">
+          <b>Note</b>
+          <code>Not print-profile accurate, just a fun learning tool.</code>
+        </div>
+      </div>
+
+      <div class="btns">
+        <button class="action" id="save">Save swatch</button>
+        <button class="action" id="copyHex">Copy HEX</button>
+        <button class="action" id="reset">Reset</button>
+        <button class="action" id="clear">Clear swatches</button>
+      </div>
+
+      <p class="hint">
+        Touch tips: the slider thumbs are bigger, buttons hit 44px minimum, and +/− makes it easy for small hands.
+      </p>
+    </section>
+
+    <aside class="card">
+      <div class="topbar" style="margin-bottom:0;">
+        <div>
+          <h1>Swatches</h1>
+          <p class="sub">Tap a swatch to load it.</p>
+        </div>
+      </div>
+      <div id="history" class="history"></div>
+    </aside>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const elements = {
+      inputs: {
+        c: $('c'), m: $('m'), y: $('y'), k: $('k'), w: $('w'),
+      },
+      pct: {
+        c: $('cPct'), m: $('mPct'), y: $('yPct'), k: $('kPct'), w: $('wPct'),
+      },
+      output: {
+        preview: $('preview'),
+        dot: $('dot'),
+        chipLabel: $('chipLabel'),
+        rgbLabel: $('rgbLabel'),
+        cmyLabel: $('cmyLabel'),
+        hexCode: $('hexCode'),
+      },
+      actions: {
+        save: $('save'),
+        copyHex: $('copyHex'),
+        reset: $('reset'),
+        clear: $('clear'),
+        kidMode: $('kidMode'),
+      },
+      history: {
+        root: $('history'),
+      }
+    };
+
+    const state = {
+      key: 'cmy_swatches',
+      kidKey: 'cmy_kid_mode',
+      clamp01: (v) => Math.max(0, Math.min(1, v)),
+      clampPct: (v) => Math.max(0, Math.min(100, Math.round(v))),
+      toHex2: (n) => n.toString(16).padStart(2, '0').toUpperCase(),
+
+      read() {
+        const i = elements.inputs;
+        return {
+          c: Number(i.c.value),
+          m: Number(i.m.value),
+          y: Number(i.y.value),
+          k: Number(i.k.value),
+          w: Number(i.w.value),
+        };
+      },
+
+      write(next) {
+        const v = {
+          c: this.clampPct(next.c ?? 0),
+          m: this.clampPct(next.m ?? 0),
+          y: this.clampPct(next.y ?? 0),
+          k: this.clampPct(next.k ?? 0),
+          w: this.clampPct(next.w ?? 0),
+        };
+
+        const i = elements.inputs;
+        i.c.value = v.c;
+        i.m.value = v.m;
+        i.y.value = v.y;
+        i.k.value = v.k;
+        i.w.value = v.w;
+      },
+
+      cmykwToRgb(cPct, mPct, yPct, kPct, wPct) {
+        const C = this.clamp01(cPct / 100);
+        const M = this.clamp01(mPct / 100);
+        const Y = this.clamp01(yPct / 100);
+        const K = this.clamp01(kPct / 100);
+        const W = this.clamp01(wPct / 100);
+
+        let r = 255 * (1 - C) * (1 - K);
+        let g = 255 * (1 - M) * (1 - K);
+        let b = 255 * (1 - Y) * (1 - K);
+
+        r = r + (255 - r) * W;
+        g = g + (255 - g) * W;
+        b = b + (255 - b) * W;
+
+        return { r: Math.round(r), g: Math.round(g), b: Math.round(b) };
+      },
+
+      rgbToHex(r, g, b) {
+        return `#${this.toHex2(r)}${this.toHex2(g)}${this.toHex2(b)}`;
+      },
+
+      loadSwatches() {
+        try {
+          const raw = localStorage.getItem(this.key);
+          return raw ? JSON.parse(raw) : [];
+        } catch {
+          return [];
+        }
+      },
+
+      saveSwatches(swatches) {
+        localStorage.setItem(this.key, JSON.stringify(swatches.slice(0, 24)));
+      },
+
+      clearSwatches() {
+        localStorage.removeItem(this.key);
+      },
+
+      loadKidMode() {
+        try { return localStorage.getItem(this.kidKey) === '1'; } catch { return false; }
+      },
+
+      saveKidMode(on) {
+        try { localStorage.setItem(this.kidKey, on ? '1' : '0'); } catch {}
+      }
+    };
+
+    const presets = {
+      sky:   { c: 35, m: 0,  y: 0,  k: 0,  w: 25 },
+      grass: { c: 50, m: 0,  y: 90, k: 10, w: 0  },
+      grape: { c: 25, m: 85, y: 0,  k: 10, w: 5  },
+      orange:{ c: 0,  m: 55, y: 95, k: 0,  w: 0  },
+      ocean: { c: 80, m: 15, y: 0,  k: 10, w: 0  },
+      night: { c: 30, m: 30, y: 0,  k: 70, w: 0  },
+      snow:  { c: 0,  m: 0,  y: 0,  k: 0,  w: 85 },
+    };
+
+    function render() {
+      const s = state.read();
+      const { r, g, b } = state.cmykwToRgb(s.c, s.m, s.y, s.k, s.w);
+      const hex = state.rgbToHex(r, g, b);
+
+      elements.output.preview.style.background = `rgb(${r}, ${g}, ${b})`;
+      elements.output.dot.style.background = `rgb(${r}, ${g}, ${b})`;
+
+      // Big, friendly label in kid mode. Nerd label otherwise.
+      const isKid = document.body.classList.contains('kid');
+      elements.output.chipLabel.textContent = isKid ? `🎨 ${hex}` : hex;
+
+      elements.output.rgbLabel.textContent = `rgb(${r}, ${g}, ${b})`;
+      elements.output.cmyLabel.textContent = `cmykw(${s.c}%, ${s.m}%, ${s.y}%, ${s.k}%, ${s.w}%)`;
+      elements.output.hexCode.textContent = hex;
+
+      elements.pct.c.textContent = `${s.c}%`;
+      elements.pct.m.textContent = `${s.m}%`;
+      elements.pct.y.textContent = `${s.y}%`;
+      elements.pct.k.textContent = `${s.k}%`;
+      elements.pct.w.textContent = `${s.w}%`;
+    }
+
+    function renderHistory() {
+      const swatches = state.loadSwatches();
+      const root = elements.history.root;
+      root.innerHTML = '';
+
+      if (!swatches.length) {
+        const empty = document.createElement('div');
+        empty.className = 'hint';
+        empty.textContent = 'No swatches saved yet.';
+        root.appendChild(empty);
+        return;
+      }
+
+      for (const s of swatches) {
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.style.background = s.hex;
+        tile.title = `Tap to load ${s.hex}`;
+
+        const label = document.createElement('small');
+        const isKid = document.body.classList.contains('kid');
+        label.textContent = isKid ? s.hex : `${s.hex}  •  ${s.c}/${s.m}/${s.y}/${s.k}/${s.w}`;
+
+        tile.appendChild(document.createElement('div'));
+        tile.appendChild(label);
+
+        tile.addEventListener('click', () => {
+          state.write(s);
+          render();
+        });
+
+        root.appendChild(tile);
+      }
+    }
+
+    function pushSwatch() {
+      const s = state.read();
+      const { r, g, b } = state.cmykwToRgb(s.c, s.m, s.y, s.k, s.w);
+      const hex = state.rgbToHex(r, g, b);
+
+      const swatches = state.loadSwatches();
+      const entry = { ...s, hex, at: Date.now() };
+
+      const key = `${hex}-${s.c}-${s.m}-${s.y}-${s.k}-${s.w}`;
+      const filtered = swatches.filter(x => `${x.hex}-${x.c}-${x.m}-${x.y}-${x.k}-${x.w}` !== key);
+
+      filtered.unshift(entry);
+      state.saveSwatches(filtered);
+      renderHistory();
+    }
+
+    async function copyHex() {
+      const text = elements.output.hexCode.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        elements.actions.copyHex.textContent = 'Copied ✅';
+        setTimeout(() => (elements.actions.copyHex.textContent = 'Copy HEX'), 900);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        elements.actions.copyHex.textContent = 'Copied ✅';
+        setTimeout(() => (elements.actions.copyHex.textContent = 'Copy HEX'), 900);
+      }
+    }
+
+    function stepChannel(ch, dir) {
+      const i = elements.inputs;
+      const cur = Number(i[ch].value);
+      const delta = dir === '+' ? 5 : -5;
+      i[ch].value = state.clampPct(cur + delta);
+      render();
+    }
+
+    function setKidMode(on) {
+      document.body.classList.toggle('kid', !!on);
+      elements.actions.kidMode.checked = !!on;
+      state.saveKidMode(!!on);
+      render();
+      renderHistory();
+    }
+
+    // Wire sliders
+    const i = elements.inputs;
+    [i.c, i.m, i.y, i.k, i.w].forEach(rng => rng.addEventListener('input', () => {
+      // prevent page scrolling in some browsers while dragging
+      render();
+    }));
+
+    // + / - buttons
+    document.querySelectorAll('.step').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const ch = btn.getAttribute('data-step');
+        const dir = btn.getAttribute('data-dir');
+        stepChannel(ch, dir);
+      });
+    });
+
+    // Presets
+    document.querySelectorAll('.preset').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-preset');
+        const p = presets[key];
+        if (p) {
+          state.write(p);
+          render();
+        }
+      });
+    });
+
+    // Actions
+    elements.actions.save.addEventListener('click', pushSwatch);
+    elements.actions.copyHex.addEventListener('click', copyHex);
+    elements.actions.reset.addEventListener('click', () => {
+      state.write({ c: 0, m: 0, y: 0, k: 0, w: 0 });
+      render();
+    });
+    elements.actions.clear.addEventListener('click', () => {
+      state.clearSwatches();
+      renderHistory();
+    });
+    elements.actions.kidMode.addEventListener('change', (e) => setKidMode(e.target.checked));
+
+    // Init
+    setKidMode(state.loadKidMode());
+    render();
+    renderHistory();
+  </script>
+</body>
+</html>
